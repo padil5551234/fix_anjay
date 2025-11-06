@@ -1,66 +1,64 @@
-# Exclude development dependencies
-../vendor/laravel/sail/**
-../vendor/phpunit/**
-../vendor/mockery/**
-../vendor/fakerphp/**
-../vendor/nunomaduro/collision/**
-../vendor/spatie/laravel-ignition/**
-../vendor/barryvdh/laravel-debugbar/**
-../vendor/laravel/pint/**
-../vendor/psy/psysh/**
-../vendor/filp/whoops/**
+# This file controls what gets included in the serverless function
 
-# Exclude tests from all vendor packages
-../vendor/**/tests/**
-../vendor/**/test/**
-../vendor/**/Tests/**
-../vendor/**/Test/**
+# Exclude everything by default
+*
 
-# Exclude documentation
-../vendor/**/*.md
-../vendor/**/docs/**
-../vendor/**/documentation/**
-../vendor/**/.git/**
-../vendor/**/examples/**
-../vendor/**/LICENSE
-../vendor/**/LICENSE.md
-../vendor/**/CHANGELOG.md
-../vendor/**/README.md
+# Include only essential directories
+!vendor/
+!bootstrap/
+!app/
+!config/
+!routes/
+!resources/views/
+!storage/framework/
+!public/build/
+!public/css/
+!public/js/
+!public/icon/
+!public/img/
+!public/images/
+!public/fonts/
+!public/adminLTE/dist/
+!public/adminLTE/plugins/jquery/
+!public/adminLTE/plugins/bootstrap/
+!public/adminLTE/plugins/select2/
+!public/adminLTE/plugins/datatables/
+!public/adminLTE/plugins/datatables-bs4/
+!public/adminLTE/plugins/datatables-buttons/
+!public/adminLTE/plugins/datatables-responsive/
+!public/favicon.ico
+!public/index.php
+!public/.htaccess
+!public/robots.txt
 
-# Exclude unnecessary files
-../vendor/**/composer.json
-../vendor/**/composer.lock
-../vendor/**/phpunit.xml
-../vendor/**/phpunit.xml.dist
-../vendor/**/.gitignore
-../vendor/**/.editorconfig
-../vendor/**/.php_cs
-../vendor/**/.php_cs.dist
-../vendor/**/.travis.yml
-../vendor/**/phpcs.xml
-../vendor/**/phpcs.xml.dist
+# Exclude specific vendor subdirectories
+vendor/bin/
+vendor/**/tests/
+vendor/**/test/
+vendor/**/Tests/
+vendor/**/Test/
+vendor/**/docs/
+vendor/**/doc/
+vendor/**/documentation/
+vendor/**/examples/
+vendor/**/example/
+vendor/**/.git/
+vendor/**/*.md
+vendor/**/*.MD
+vendor/**/*.txt
+vendor/**/LICENSE*
+vendor/**/CHANGELOG*
+vendor/**/composer.json
+vendor/**/composer.lock
+vendor/**/phpunit.xml*
+vendor/**/.gitignore
 
-# Exclude database files
-../database/migrations/**
-../database/seeders/**
-../database/factories/**
+# Exclude storage caches
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+storage/logs/
 
-# Exclude tests
-../tests/**
-
-# Large packages we don't need in serverless
-../public/adminLTE/plugins/datatables-autofill/**
-../public/adminLTE/plugins/codemirror/**
-../public/adminLTE/plugins/inputmask/**
-../public/adminLTE/plugins/summernote/**
-../public/adminLTE/plugins/tempusdominus-bootstrap-4/**
-../public/adminLTE/plugins/ion-rangeslider/**
-../public/adminLTE/plugins/bootstrap-slider/**
-../public/adminLTE/plugins/jquery-mapael/**
-../public/adminLTE/plugins/sparklines/**
-../public/adminLTE/plugins/select2-bootstrap4-theme/**
-../public/adminLTE/plugins/toastr/**
-../public/adminLTE/plugins/jquery-mousewheel/**
-../public/adminLTE/plugins/jquery-ui/**
-../public/adminLTE/build/**
-../public/adminLTE/pages/**
+# Exclude unnecessary bootstrap cache
+bootstrap/cache/*
+!bootstrap/cache/.gitignore
