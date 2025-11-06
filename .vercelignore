@@ -59,8 +59,6 @@ Thumbs.db
 /public/storage
 
 # Composer
-composer.json
-composer.lock
 /vendor/bin
 
 # Config/scripts not needed in production
