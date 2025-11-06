@@ -77,3 +77,35 @@ vite.config.js
 /public/adminLTE/plugins/inputmask
 /public/adminLTE/plugins/jquery-mousewheel
 /public/adminLTE/plugins/jquery-ui
+/public/adminLTE/plugins/summernote
+/public/adminLTE/plugins/tempusdominus-bootstrap-4
+/public/adminLTE/plugins/ion-rangeslider
+/public/adminLTE/plugins/bootstrap-slider
+/public/adminLTE/plugins/jquery-mapael
+/public/adminLTE/plugins/sparklines
+/public/adminLTE/plugins/select2-bootstrap4-theme
+/public/adminLTE/plugins/toastr
+/public/adminLTE/build
+/public/adminLTE/pages
+
+# Exclude vendor dev dependencies
+/vendor/laravel/sail
+/vendor/phpunit
+/vendor/mockery
+/vendor/fakerphp
+/vendor/nunomaduro/collision
+/vendor/spatie/laravel-ignition
+/vendor/barryvdh/laravel-debugbar
+/vendor/laravel/pint
+/vendor/psy/psysh
+/vendor/filp/whoops
+
+# Exclude vendor tests and docs
+/vendor/**/tests
+/vendor/**/test
+/vendor/**/Tests
+/vendor/**/Test
+/vendor/**/docs
+/vendor/**/documentation
+/vendor/**/examples
+/vendor/**/.git
