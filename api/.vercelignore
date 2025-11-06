@@ -1,0 +1,40 @@
+# Exclude development dependencies
+../vendor/laravel/sail/**
+../vendor/phpunit/**
+../vendor/mockery/**
+../vendor/fakerphp/**
+../vendor/nunomaduro/collision/**
+../vendor/spatie/laravel-ignition/**
+../vendor/barryvdh/laravel-debugbar/**
+../vendor/laravel/pint/**
+
+# Exclude tests from all vendor packages
+../vendor/**/tests/**
+../vendor/**/test/**
+../vendor/**/Tests/**
+../vendor/**/Test/**
+
+# Exclude documentation
+../vendor/**/*.md
+../vendor/**/docs/**
+../vendor/**/documentation/**
+../vendor/**/.git/**
+../vendor/**/examples/**
+
+# Exclude unnecessary files
+../vendor/**/composer.json
+../vendor/**/composer.lock
+../vendor/**/phpunit.xml
+../vendor/**/phpunit.xml.dist
+../vendor/**/.gitignore
+../vendor/**/.editorconfig
+../vendor/**/.php_cs
+../vendor/**/.php_cs.dist
+../vendor/**/.travis.yml
+../vendor/**/phpcs.xml
+../vendor/**/phpcs.xml.dist
+
+# Large packages we don't need in serverless
+../public/adminLTE/plugins/datatables-autofill/**
+../public/adminLTE/plugins/codemirror/**
+../public/adminLTE/build/**

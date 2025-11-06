@@ -1,26 +1,79 @@
-/vendor
+# Dependencies
 /node_modules
-/storage/*.key
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
 /storage/logs
+
+# Caches
 /storage/framework/cache
 /storage/framework/sessions
 /storage/framework/views
-.env
-.env.backup
+/storage/framework/testing
+/bootstrap/cache/*
+!bootstrap/cache/.gitignore
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-*.log
-.DS_Store
-Thumbs.db
+
+# Testing
 /tests
+phpunit.xml
+.phpunit.cache
+
+# Database
 /database/migrations
 /database/seeders
-*.md
+/database/factories
+*.sqlite
+*.sqlite-journal
+
+# Development
+Homestead.json
+Homestead.yaml
+/.vagrant
+/docker-compose.yml
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+.editorconfig
+
+# Git
 .git
 .gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+*.drawio
+
+# Build artifacts
+/public/hot
+/public/storage
+
+# Composer
 composer.json
 composer.lock
+/vendor/bin
+
+# Config/scripts not needed in production
+artisan
 phpunit.xml
+webpack.mix.js
+tailwind.config.js
+postcss.config.js
+vite.config.js
+
+# Large/unnecessary public assets
+/public/adminLTE/plugins/datatables-autofill
+/public/adminLTE/plugins/codemirror
+/public/adminLTE/plugins/inputmask
+/public/adminLTE/plugins/jquery-mousewheel
+/public/adminLTE/plugins/jquery-ui
