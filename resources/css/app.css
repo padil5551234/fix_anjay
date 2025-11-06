@@ -1,8 +1,8 @@
+@import "pages/dashboard.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "pages/dashboard.css";
 
 [x-cloak] {
     display: none;
