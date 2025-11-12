@@ -7,8 +7,7 @@
         name="viewport">
     <title>@yield('title') &mdash; {{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Favicons -->
-    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+
     <!-- General CSS Files -->
     <link rel="stylesheet"
         href="{{ asset('stisla/library/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -43,8 +42,8 @@
 
 <body style="margin: 0; padding: 0; overflow-x: hidden;">
     <div id="app" style="min-height: 100vh;">
-        @if(Request::is('login') || Request::is('register'))
-            <!-- Content for login and register with background -->
+        @if(Request::is('login') || Request::is('register') || Request::is('forgot-password') || Request::is('password/reset/*'))
+            <!-- Content for login, register, forgot-password and reset-password with background -->
             @yield('main')
         @else
             <section class="section">

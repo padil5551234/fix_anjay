@@ -4,8 +4,7 @@
     Dashboard
 @endsection
 
-
-@section('content')
+@section('content')\
 <section id="hero" style="background: url('{{ asset('img/gambar_landing.png') }}') center/cover no-repeat fixed; position: relative;">
     <div class="container">
         <div class="row justify-content-between">
@@ -32,7 +31,9 @@
     <section id="about" class="about">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right">
+                <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch" data-aos="fade-right" style="position: relative; overflow: hidden;">
+                    <img src="{{ asset('img/about-stis.jpg') }}" class="img-fluid" alt="DinasSolution - Bimbel Kedinasan" style="object-fit: cover; width: 100%; height: 100%; min-height: 400px; border-radius: 10px;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, transparent 100%);"></div>
                 </div>
                 <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
                     <h3>Kenapa harus DinasSolution</h3>
@@ -98,6 +99,356 @@
             </div>
         </div>
     </section><!-- End Counts Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Testimoni</h2>
+                <p>Apa Kata Alumni Kami</p>
+            </div>
+
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-aos="fade-up" data-aos-delay="100">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                </div>
+
+                <div class="carousel-inner">
+                    <!-- Slide 1 - 3 Testimoni -->
+                    <div class="carousel-item active">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Try out di DinasSolution sangat membantu persiapan saya. Soal-soalnya mirip dengan ujian asli SPMB STIS. Alhamdulillah sekarang saya sudah mahasiswa STIS!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-1.jpg') }}" alt="Ahmad Ridwan">
+                                        <div class="author-info">
+                                            <h4>Ahmad Ridwan</h4>
+                                            <p>Mahasiswa STIS Angkatan 66</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Mentor-mentornya sabar dan profesional. Materi yang diajarkan sangat terstruktur dan mudah dipahami. Recommended banget untuk persiapan kedinasan!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-2.jpg') }}" alt="Siti Nurhaliza">
+                                        <div class="author-info">
+                                            <h4>Siti Nurhaliza</h4>
+                                            <p>Mahasiswa PKN STAN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Harga terjangkau dengan kualitas premium. Sistem CAT-nya membuat saya terbiasa dengan ujian sebenarnya. Terima kasih DinasSolution!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-3.jpg') }}" alt="Budi Santoso">
+                                        <div class="author-info">
+                                            <h4>Budi Santoso</h4>
+                                            <p>Mahasiswa IPDN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-half"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 - 3 Testimoni Lainnya -->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Pembahasan soal-soalnya sangat detail dan mudah dipahami. Saya yang awalnya lemah di matematika jadi lebih percaya diri menghadapi SPMB!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-4.jpg') }}" alt="Rina Fitriani">
+                                        <div class="author-info">
+                                            <h4>Rina Fitriani</h4>
+                                            <p>Mahasiswa STIS Angkatan 65</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Try out rutin setiap minggu membuat saya terlatih mengatur waktu. Sistem ranking juga memotivasi saya untuk terus belajar lebih giat!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-5.jpg') }}" alt="Dimas Prasetyo">
+                                        <div class="author-info">
+                                            <h4>Dimas Prasetyo</h4>
+                                            <p>Mahasiswa STIN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Grup WhatsApp sangat membantu untuk diskusi soal. Kakak mentor juga responsif menjawab pertanyaan. Worth it banget!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-6.jpg') }}" alt="Anisa Putri">
+                                        <div class="author-info">
+                                            <h4>Anisa Putri</h4>
+                                            <p>Mahasiswa AIM 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 - 3 Testimoni Lainnya -->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Materi SKD-nya lengkap banget! TWK, TIU, TKP semuanya dibahas sampai tuntas. Saya lolos di tahap SKD berkat bimbingan di sini."
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-7.jpg') }}" alt="Farhan Maulana">
+                                        <div class="author-info">
+                                            <h4>Farhan Maulana</h4>
+                                            <p>Mahasiswa IPDN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-half"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Tips dan trik dari kakak mentor sangat membantu! Strategi mengerjakan soal yang diajarkan terbukti efektif saat ujian sebenarnya."
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-8.jpg') }}" alt="Dewi Sartika">
+                                        <div class="author-info">
+                                            <h4>Dewi Sartika</h4>
+                                            <p>Mahasiswa POLTEKIP 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Platform online-nya user friendly dan mudah diakses. Bisa belajar kapan saja dan dimana saja. Sangat cocok untuk yang sibuk seperti saya!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-9.jpg') }}" alt="Rizki Firmansyah">
+                                        <div class="author-info">
+                                            <h4>Rizki Firmansyah</h4>
+                                            <p>Mahasiswa PKN STAN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 - 3 Testimoni Tambahan -->
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Belajar di DinasSolution benar-benar membuka wawasan saya. Dari yang tidak tahu apa-apa, sekarang saya sudah mahasiswa kedinasan impian!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-10.jpg') }}" alt="Linda Permata">
+                                        <div class="author-info">
+                                            <h4>Linda Permata</h4>
+                                            <p>Mahasiswa STSN 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Investasi terbaik untuk masa depan! Dengan biaya yang terjangkau, saya mendapat bimbingan berkualitas dan akhirnya lolos SPMB."
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-11.jpg') }}" alt="Yoga Aditama">
+                                        <div class="author-info">
+                                            <h4>Yoga Aditama</h4>
+                                            <p>Mahasiswa STMKG 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <i class="bx bxs-quote-alt-left quote-icon"></i>
+                                        <p class="testimonial-text">
+                                            "Sistem pembelajaran terstruktur dan terarah. Bank soalnya lengkap dan selalu update. Sukses terus DinasSolution!"
+                                        </p>
+                                    </div>
+                                    <div class="testimonial-author">
+                                        <img src="{{ asset('img/testimonial-12.jpg') }}" alt="Maya Safitri">
+                                        <div class="author-info">
+                                            <h4>Maya Safitri</h4>
+                                            <p>Mahasiswa POLTEKIM 2024</p>
+                                            <div class="stars">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-half"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section><!-- End Testimonials Section -->
 
     <!-- ======= Pricing Section ======= -->
     <section id="pricing" class="pricing">
@@ -343,6 +694,152 @@
     </section><!-- End Contact Section -->
 </main><!-- End #main -->
 @endsection
+
+@push('styles')
+<style>
+/* Testimonials Section */
+.testimonials {
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+
+.testimonial-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.testimonial-content {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.quote-icon {
+    font-size: 30px;
+    color: var(--primary-color, #4361ee);
+    opacity: 0.3;
+    margin-bottom: 10px;
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 3px solid #f0f0f0;
+}
+
+.author-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.author-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 14px;
+}
+
+.stars i {
+    margin-right: 2px;
+}
+
+/* Carousel Customization */
+#testimonialCarousel {
+    padding: 20px 0;
+}
+
+#testimonialCarousel .carousel-indicators {
+    margin-bottom: -30px;
+}
+
+#testimonialCarousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color, #4361ee);
+    opacity: 0.5;
+    border: none;
+}
+
+#testimonialCarousel .carousel-indicators button.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+#testimonialCarousel .carousel-control-prev,
+#testimonialCarousel .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color, #4361ee);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+#testimonialCarousel .carousel-control-prev {
+    left: -60px;
+}
+
+#testimonialCarousel .carousel-control-next {
+    right: -60px;
+}
+
+#testimonialCarousel .carousel-control-prev:hover,
+#testimonialCarousel .carousel-control-next:hover {
+    opacity: 1;
+}
+
+#testimonialCarousel .carousel-control-prev-icon,
+#testimonialCarousel .carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    #testimonialCarousel .carousel-control-prev {
+        left: 0;
+    }
+    
+    #testimonialCarousel .carousel-control-next {
+        right: 0;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
