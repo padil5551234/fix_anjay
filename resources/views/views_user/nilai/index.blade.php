@@ -44,7 +44,7 @@
                                                 / {{ $ujian->ujianUser[0]->jawabanPeserta->count() }}</span>
                                         </td>
                                     </tr>
-                                    @if ($ujian->tampil_nilai == 1 || ($ujian->tampil_nilai == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir))
+                                    @if ($ujian->tampil_nilai == 1 || ($ujian->tampil_nilai == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_nilai == 3 && \Carbon\Carbon::now() > $ujian->waktu_pengumuman))
                                         @if ($ujian->jenis_ujian == 'skd')
                                             @php
                                                 $twk = $ujian->ujianUser[0]->nilai_twk >= 65;
@@ -257,50 +257,62 @@
                         @endif
                     </div>
                     <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title mb-2"><b>History Jawaban Ujian</b></h3>
-                            <table class="table table-striped table-hover mt-3">
-                                <thead>
+                    <div class="card-body">
+                        <h3 class="card-title mb-2"><b>History Jawaban Ujian</b></h3>
+                        <table class="table table-striped table-hover mt-3">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%">No.</th>
+                                    <th>Jawaban</th>
+                                    @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && \Carbon\Carbon::now() > $ujian->waktu_pengumuman))
+                                        <th>Kunci</th>
+                                    @endif
+                                    @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && \Carbon\Carbon::now() > $ujian->waktu_pengumuman))
+                                        <th>Pembahasan</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ujian->ujianUser[0]->jawabanPeserta as $key => $jawaban)
                                     <tr>
-                                        <th style="width:15%">No.</th>
-                                        <th>Jawaban</th>
-                                        @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir))
-                                            <th>Kunci</th>
+                                        <td>{{ $key + 1 }}.</td>
+                                        @if ($jawaban->jawaban_id == null)
+                                            <td>-</td>
+                                        @else
+                                            @foreach ($jawaban->soal->jawaban as $key => $jwb)
+                                                @if ($jwb->id == $jawaban->jawaban_id)
+                                                    <td>{{ chr($key + 65) }}</td>
+                                                @endif
+                                            @endforeach
                                         @endif
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ujian->ujianUser[0]->jawabanPeserta as $key => $jawaban)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            @if ($jawaban->jawaban_id == null)
-                                                <td>-</td>
-                                            @else
-                                                @foreach ($jawaban->soal->jawaban as $key => $jwb)
-                                                    @if ($jwb->id == $jawaban->jawaban_id)
+                                        @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && \Carbon\Carbon::now() > $ujian->waktu_pengumuman))
+                                            @foreach ($jawaban->soal->jawaban as $key => $jwb)
+                                                @if ($jawaban->soal->jenis_soal == 'tkp')
+                                                    @if ($jwb->point == 5)
                                                         <td>{{ chr($key + 65) }}</td>
                                                     @endif
-                                                @endforeach
-                                            @endif
-                                            @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir))
-                                                @foreach ($jawaban->soal->jawaban as $key => $jwb)
-                                                    @if ($jawaban->soal->jenis_soal == 'tkp')
-                                                        @if ($jwb->point == 5)
-                                                            <td>{{ chr($key + 65) }}</td>
-                                                        @endif
-                                                    @else
-                                                        @if ($jwb->id == $jawaban->soal->kunci_jawaban)
-                                                            <td>{{ chr($key + 65) }}</td>
-                                                        @endif
+                                                @else
+                                                    @if ($jwb->id == $jawaban->soal->kunci_jawaban)
+                                                        <td>{{ chr($key + 65) }}</td>
                                                     @endif
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                        @if ($ujian->tampil_kunci == 1 || ($ujian->tampil_kunci == 2 && \Carbon\Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && \Carbon\Carbon::now() > $ujian->waktu_pengumuman))
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-info" onclick="showPembahasan({{ $jawaban->soal->id }})">
+                                                    <i class="fas fa-book-open"></i> Lihat
+                                                </button>
+                                            </td>
+                                        @else
+                                            <td>-</td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -335,3 +347,104 @@
     </script>
 @endpush
 @endif
+
+@push('scripts')
+<script>
+    // Show discussion function
+    function showPembahasan(soalId) {
+        const ujianId = '{{ $ujian->id }}';
+
+        $.ajax({
+            url: `/ujian/${ujianId}/pembahasan-after/${soalId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    showPembahasanModal(response);
+                } else {
+                    toastr.error(response.message || 'Gagal memuat pembahasan');
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON;
+                if (response && response.message) {
+                    toastr.error(response.message);
+                } else {
+                    toastr.error('Terjadi kesalahan saat memuat pembahasan');
+                }
+            }
+        });
+    }
+
+    // Show discussion modal
+    function showPembahasanModal(data) {
+        let jawabanHtml = '';
+        data.jawaban.forEach(function(jawaban, index) {
+            const btnClass = jawaban.is_correct ? 'btn-success' : 'btn-outline-secondary';
+            const icon = jawaban.is_correct ? '<i class="fas fa-check"></i> ' : '';
+            jawabanHtml += `
+                <li class="list-group-item border-0 ps-0 pt-0 mb-2">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <button style="pointer-events: none" type="button" class="btn mb-0 mx-2 ps-3 pe-3 py-2 ${btnClass}">${icon}${jawaban.option}</button>
+                                </td>
+                                <td>${jawaban.jawaban}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            `;
+        });
+
+        const modalHtml = `
+            <div class="modal fade" id="pembahasanModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pembahasan Soal</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <h6>Soal:</h6>
+                                <div class="border p-3 rounded bg-light">${data.soal}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6>Pilihan Jawaban:</h6>
+                                <ul class="list-group">
+                                    ${jawabanHtml}
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6>Pembahasan:</h6>
+                                <div class="border p-3 rounded bg-info bg-opacity-10">${data.pembahasan || 'Pembahasan belum tersedia.'}</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if any
+        $('#pembahasanModal').remove();
+
+        // Add new modal to body
+        $('body').append(modalHtml);
+
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('pembahasanModal'));
+        modal.show();
+
+        // Remove modal from DOM when closed
+        $('#pembahasanModal').on('hidden.bs.modal', function() {
+            $(this).remove();
+        });
+    }
+</script>
+@endpush

@@ -14,7 +14,7 @@ class MaterialController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified', 'role:tutor']);
+        $this->middleware(['auth', 'verified', 'role:tutor', 'profiled']);
     }
 
     /**

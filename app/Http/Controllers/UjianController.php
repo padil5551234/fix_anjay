@@ -61,6 +61,109 @@ class UjianController extends Controller
         return view('views_user.ujian.tryout', compact('data', 'tryout'));
     }
 
+    /**
+     * Check if user has access to discussion during test
+     */
+    private function canAccessPembahasanDuringTest($ujian, $ujianUser)
+    {
+        // Check if discussion is allowed during test for this ujian
+        if (!$ujian->allow_pembahasan_during_test) {
+            return false;
+        }
+
+        // Check if user has access limit
+        $accessCount = JawabanPeserta::where('ujian_user_id', $ujianUser->id)
+            ->whereNotNull('accessed_pembahasan_at')
+            ->count();
+
+        if ($ujian->pembahasan_access_limit && $accessCount >= $ujian->pembahasan_access_limit) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Show discussion for a specific question during test
+     */
+    public function showPembahasanDuringTest($ujianId, $soalId)
+    {
+        $ujianUser = UjianUser::with('ujian')->findOrFail($ujianId);
+        
+        if ($ujianUser->user_id != auth()->user()->id) {
+            abort(404);
+        }
+
+        if ($ujianUser->status == 2) {
+            abort(403, 'Ujian sudah selesai');
+        }
+
+        // Check if user has access to discussion during test
+        if (!$this->canAccessPembahasanDuringTest($ujianUser->ujian, $ujianUser)) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Anda tidak memiliki akses ke pembahasan saat ini. Hubungi admin jika mengalami kesulitan.'
+            ], 403);
+        }
+
+        $soal = Soal::with('jawaban')
+            ->where('id', $soalId)
+            ->where('ujian_id', $ujianId)
+            ->first();
+
+        if (!$soal) {
+            abort(404);
+        }
+
+        // Mark that user accessed discussion
+        JawabanPeserta::where('ujian_user_id', $ujianUser->id)
+            ->where('soal_id', $soalId)
+            ->update(['accessed_pembahasan_at' => Carbon::now()]);
+
+        return response()->json([
+            'success' => true,
+            'soal' => $soal->soal,
+            'pembahasan' => $soal->pembahasan,
+            'jawaban' => $soal->jawaban->map(function($jawaban, $key) use ($soal) {
+                return [
+                    'id' => $jawaban->id,
+                    'jawaban' => $jawaban->jawaban,
+                    'is_correct' => $jawaban->id == $soal->kunci_jawaban,
+                    'option' => chr($key + 65)
+                ];
+            }),
+            'kunci_jawaban' => $soal->kunci_jawaban
+        ]);
+    }
+
+    /**
+     * Get discussion access status for current user
+     */
+    public function getPembahasanAccessStatus($ujianId)
+    {
+        $ujianUser = UjianUser::with('ujian')->findOrFail($ujianId);
+        
+        if ($ujianUser->user_id != auth()->user()->id) {
+            abort(404);
+        }
+
+        $ujian = $ujianUser->ujian;
+        $accessCount = JawabanPeserta::where('ujian_user_id', $ujianUser->id)
+            ->whereNotNull('accessed_pembahasan_at')
+            ->count();
+
+        $limit = $ujian->pembahasan_access_limit;
+        $remaining = $limit ? max(0, $limit - $accessCount) : null;
+
+        return response()->json([
+            'allowed' => $ujian->allow_pembahasan_during_test,
+            'limit' => $limit,
+            'used' => $accessCount,
+            'remaining' => $remaining,
+            'reason' => $ujian->pembahasan_access_reason
+        ]);
+    }
+
     public function ujian($id) {
         $ujianUser = UjianUser::with('ujian')->findOrFail($id);
         if ($ujianUser->user_id != auth()->user()->id) {
@@ -107,6 +210,47 @@ class UjianController extends Controller
         // $preparation = Soal::with('jawaban')->where('ujian_id', $id);
         $soal = $preparation->paginate(1, ['*'], 'no');
         return view('views_user.ujian.pembahasan', compact('soal', 'ujian'));
+    }
+
+    /**
+     * Show discussion for a specific question after test completion
+     */
+    public function showPembahasanAfterTest($ujianId, $soalId)
+    {
+        $ujian = Ujian::findOrFail($ujianId);
+        $ujianUser = UjianUser::where('ujian_id', $ujianId)->where('user_id', auth()->user()->id)->first();
+
+        // Check if user has access to view answers/discussion
+        if (!(($ujian->tampil_kunci == 1 && $ujianUser) || ($ujian->tampil_kunci == 2 && Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && Carbon::now() > $ujian->waktu_pengumuman))) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Anda tidak memiliki akses ke pembahasan saat ini.'
+            ], 403);
+        }
+
+        $soal = Soal::with('jawaban')
+            ->where('id', $soalId)
+            ->where('ujian_id', $ujianId)
+            ->first();
+
+        if (!$soal) {
+            abort(404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'soal' => $soal->soal,
+            'pembahasan' => $soal->pembahasan,
+            'jawaban' => $soal->jawaban->map(function($jawaban, $key) use ($soal) {
+                return [
+                    'id' => $jawaban->id,
+                    'jawaban' => $jawaban->jawaban,
+                    'is_correct' => $jawaban->id == $soal->kunci_jawaban,
+                    'option' => chr($key + 65)
+                ];
+            }),
+            'kunci_jawaban' => $soal->kunci_jawaban
+        ]);
     }
 
     /**

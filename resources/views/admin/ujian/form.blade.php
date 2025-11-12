@@ -178,6 +178,34 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Discussion Access Configuration -->
+                    <div class="form-group row">
+                        <label for="Allow_pembahasan_during_test" class="col-sm-3 col-form-label control-label">Izinkan Pembahasan Saat Ujian</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="allow_pembahasan_during_test" id="Allow_pembahasan_during_test">
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
+                            <small class="form-text text-muted">Izinkan peserta melihat pembahasan soal selama ujian berlangsung</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row" id="pembahasanLimitGroup" style="display: none;">
+                        <label for="Pembahasan_access_limit" class="col-sm-3 col-form-label control-label">Batas Akses Pembahasan</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="pembahasan_access_limit" id="Pembahasan_access_limit" class="form-control" placeholder="Jumlah maksimal soal yang bisa dilihat pembahasannya" min="1">
+                            <small class="form-text text-muted">Kosongkan untuk akses tanpa batas. Biasanya digunakan untuk membantu peserta yang mengalami kesulitan.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row" id="pembahasanReasonGroup" style="display: none;">
+                        <label for="Pembahasan_access_reason" class="col-sm-3 col-form-label control-label">Alasan Akses Pembahasan</label>
+                        <div class="col-sm-9">
+                            <textarea name="pembahasan_access_reason" id="Pembahasan_access_reason" class="form-control" rows="3" placeholder="Jelaskan mengapa akses pembahasan diberikan selama ujian..."></textarea>
+                            <small class="form-text text-muted">Alasan ini akan ditampilkan kepada peserta yang mengalami kesulitan</small>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -189,3 +217,24 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<script>
+$(document).ready(function() {
+    // Handle discussion access toggle
+    $('#Allow_pembahasan_during_test').change(function() {
+        if ($(this).val() == '1') {
+            $('#pembahasanLimitGroup').show();
+            $('#pembahasanReasonGroup').show();
+        } else {
+            $('#pembahasanLimitGroup').hide();
+            $('#pembahasanReasonGroup').hide();
+        }
+    });
+    
+    // Check initial state
+    if ($('#Allow_pembahasan_during_test').val() == '1') {
+        $('#pembahasanLimitGroup').show();
+        $('#pembahasanReasonGroup').show();
+    }
+});
+</script>

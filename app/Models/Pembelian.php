@@ -73,7 +73,7 @@ class Pembelian extends Model
      */
     public function voucher()
     {
-        return $this->belongsTo(Voucher::class, 'voucher_id');
+        return $this->belongsTo(Voucher::class, 'id_voucher');
     }
 
     /**

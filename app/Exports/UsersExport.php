@@ -19,7 +19,7 @@ class UsersExport implements FromQuery, WithMapping, WithHeadings
     {
         return User::query()
                     ->with('roles', 'usersDetail')
-                    ->doesntHave('roles')
+                    ->role('user')
                     ->orderBy('created_at');
     }
 

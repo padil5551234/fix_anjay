@@ -12,7 +12,7 @@ class UserMaterialController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'verified']);
+        $this->middleware(['auth', 'verified', 'profiled']);
     }
 
     /**
@@ -35,12 +35,17 @@ class UserMaterialController extends Controller
         // Filter materials by purchased packages or public materials
         $query->where(function($q) use ($purchasedPackages) {
             $q->where('is_public', true);
-            
+
             if ($purchasedPackages->isNotEmpty()) {
                 $packageIds = $purchasedPackages->pluck('id');
                 $q->orWhereIn('batch_id', $packageIds);
             }
         });
+
+        // If user has no purchases and no public materials, show empty state
+        if ($purchasedPackages->isEmpty()) {
+            $query->where('is_public', true);
+        }
 
         // Filter by type
         if ($request->has('type') && $request->type !== 'all') {

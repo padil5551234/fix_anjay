@@ -127,17 +127,29 @@ $ada_jawaban = false;
                         <div id="divFoot" class="card-footer">
                             <div class="d-flex justify-content-between">
                                 <button type="button" @if($soal->currentPage() != 1) onclick="fetch_data({{ $soal->currentPage() - 1 }})" @else disabled @endif class="btn btn-primary">Sebelumnya</button>
-                                @if($ujian->tampil_poin && $soal->count() > 0)
-                                    <button class="btn btn-secondary">
-                                        @if($item->soal->jenis_soal == 'tkp')
-                                            Poin : 1 - 5
-                                        @else
-                                            Benar: {{ $item->soal->poin_benar }}, Salah: {{ $item->soal->poin_salah }}, Kosong: {{ $item->soal->poin_kosong }}
-                                        @endif
+                                
+                                <div class="d-flex gap-2">
+                                    @if($ujian->tampil_poin && $soal->count() > 0)
+                                        <button class="btn btn-secondary">
+                                            @if($item->soal->jenis_soal == 'tkp')
+                                                Poin : 1 - 5
+                                            @else
+                                                Benar: {{ $item->soal->poin_benar }}, Salah: {{ $item->soal->poin_salah }}, Kosong: {{ $item->soal->poin_kosong }}
+                                            @endif
+                                        </button>
+                                    @endif
+                                    
+                                    <!-- Discussion Access Button -->
+                                    <button type="button" 
+                                            onclick="showPembahasan({{ $item->soal->id }})" 
+                                            class="btn btn-info" 
+                                            id="pembahasanBtn">
+                                        <i class="fas fa-book-open"></i> Lihat Pembahasan
                                     </button>
-                                @endif
+                                </div>
+                                
                                 @if($soal->currentPage() == $soal->total())
-                                    <button type="submit" onclick="submit()" class="btn btn-danger float-end">Selesai</button>
+                                    <button type="submit" onclick="submit()" class="btn btn-danger float-end">Selesai & Lihat Hasil</button>
                                 @else
                                     <button type="button" @if($soal->currentPage() != $soal->total()) onclick="fetch_data({{ $soal->currentPage() + 1 }})" @endif class="btn btn-primary">Berikutnya</button>
                                 @endif
@@ -149,7 +161,7 @@ $ada_jawaban = false;
             </div>
             <div id="navigation" class="col-lg-3" style="text-align: center">
                 <div class="d-grid">
-                    <button type="submit" onclick="submit()" class="btn btn-danger float-end mb-3">Selesai</button>
+                    <button type="submit" onclick="submit()" class="btn btn-danger float-end mb-3">Selesai & Lihat Hasil</button>
                 </div>
                 <div class="card">
                     <div class="card-header">
@@ -336,6 +348,103 @@ $ada_jawaban = false;
                 })
             }
         })
+    }
+
+    // Show discussion function
+    function showPembahasan(soalId) {
+        const ujianId = '{{ $ujianUser->id }}';
+        
+        $.ajax({
+            url: `/ujian/${ujianId}/pembahasan/${soalId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    showPembahasanModal(response);
+                } else {
+                    toastr.error(response.message || 'Gagal memuat pembahasan');
+                }
+            },
+            error: function(xhr) {
+                const response = xhr.responseJSON;
+                if (response && response.message) {
+                    toastr.error(response.message);
+                } else {
+                    toastr.error('Terjadi kesalahan saat memuat pembahasan');
+                }
+            }
+        });
+    }
+
+    // Show discussion modal
+    function showPembahasanModal(data) {
+        let jawabanHtml = '';
+        data.jawaban.forEach(function(jawaban, index) {
+            const btnClass = jawaban.is_correct ? 'btn-success' : 'btn-outline-secondary';
+            const icon = jawaban.is_correct ? '<i class="fas fa-check"></i> ' : '';
+            jawabanHtml += `
+                <li class="list-group-item border-0 ps-0 pt-0 mb-2">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <button style="pointer-events: none" type="button" class="btn mb-0 mx-2 ps-3 pe-3 py-2 ${btnClass}">${icon}${jawaban.option}</button>
+                                </td>
+                                <td>${jawaban.jawaban}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            `;
+        });
+
+        const modalHtml = `
+            <div class="modal fade" id="pembahasanModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pembahasan Soal</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <h6>Soal:</h6>
+                                <div class="border p-3 rounded bg-light">${data.soal}</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h6>Pilihan Jawaban:</h6>
+                                <ul class="list-group">
+                                    ${jawabanHtml}
+                                </ul>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h6>Pembahasan:</h6>
+                                <div class="border p-3 rounded bg-info bg-opacity-10">${data.pembahasan || 'Pembahasan belum tersedia.'}</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Remove existing modal if any
+        $('#pembahasanModal').remove();
+        
+        // Add new modal to body
+        $('body').append(modalHtml);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('pembahasanModal'));
+        modal.show();
+        
+        // Remove modal from DOM when closed
+        $('#pembahasanModal').on('hidden.bs.modal', function() {
+            $(this).remove();
+        });
     }
 
 </script>

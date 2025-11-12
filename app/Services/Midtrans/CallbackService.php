@@ -58,7 +58,7 @@ class CallbackService extends Midtrans
     {
         $orderId = $this->pembelian->id;
         $statusCode = $this->notification->status_code;
-        $grossAmount = $this->pembelian->ujian->harga;
+        $grossAmount = $this->notification->gross_amount;
         $serverKey = $this->serverKey;
         $input = $orderId . $statusCode . $grossAmount . $serverKey;
         $signature = openssl_digest($input, 'sha512');
@@ -71,7 +71,10 @@ class CallbackService extends Midtrans
         $notification = new Notification();
 
         $orderNumber = $notification->order_id;
-        $pembelian = Pembelian::with('ujian')->find($orderNumber);
+        // Parse order_id to get pembelian ID (first part before first dash)
+        $idParts = explode('-', $orderNumber);
+        $pembelianId = $idParts[0];
+        $pembelian = Pembelian::with('paketUjian')->find($pembelianId);
 
         $this->notification = $notification;
         $this->pembelian = $pembelian;

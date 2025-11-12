@@ -26,6 +26,8 @@ class JawabanPeserta extends Model
         'jawaban_id',
         'ragu_ragu',
         'poin',
+        'pembelian_id',
+        'accessed_pembahasan_at',
     ];
 
     /**

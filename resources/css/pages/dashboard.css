@@ -72,6 +72,7 @@
     line-height: 1.6;
 }
 
+
 .btn-get-started {
     background: var(--bg-white);
     color: var(--primary-color);
@@ -293,6 +294,8 @@
     box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .tutor-card:hover {
@@ -304,6 +307,7 @@
     width: 100%;
     height: 300px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .tutor-image img {
@@ -318,28 +322,41 @@
 }
 
 .tutor-info {
-    padding: 25px;
+    padding: 30px 25px;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .tutor-info h3 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+    text-align: center;
 }
 
 .tutor-info .tutor-title {
     color: var(--primary-color);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 15px;
+    letter-spacing: 0.2px;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
 }
 
 .tutor-info .tutor-desc {
     color: var(--text-light);
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 90%;
+    margin: 0 auto;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
 }
 
 /* ====================================

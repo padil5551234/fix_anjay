@@ -185,6 +185,50 @@
             box-shadow: 0 4px 12px rgba(113, 98, 237, 0.4);
         }
 
+        .modern-btn-google {
+            background: #fbf0b4;
+            border: none;
+            border-radius: 5px;
+            padding: 7px 18px;
+            font-weight: 400;
+            color: #000000;
+            transition: all 0.3s ease;
+            width: 140px;
+            height: 28px;
+            font-size: 10px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 auto;
+        }
+
+        .modern-btn-google:hover {
+            background: #f5e89d;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(251, 240, 180, 0.5);
+        }
+
+        .modern-btn-google .fab {
+            font-size: 14px;
+        }
+
+        .modern-divider {
+            position: relative;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .modern-divider span {
+            background: #ffffff;
+            padding: 0 0.8rem;
+            color: #000000;
+            font-size: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
         .modern-link {
             color: #ff0083;
             text-decoration: none;
@@ -389,11 +433,22 @@
                         <label for="agree">Saya setuju dengan syarat dan ketentuan</label>
                     </div>
 
-                    <button 
+                    <button
                         type="submit"
                         class="modern-btn-register">
                         Daftar
                     </button>
+
+                    <div class="modern-divider">
+                        <span>atau</span>
+                    </div>
+
+                    <a
+                        href="{{ route('google.login') }}"
+                        class="modern-btn-google"
+                        tabindex="6">
+                        <span class="fab fa-google"></span> Daftar dengan Google
+                    </a>
 
                     <div class="login-link">
                         <span>Sudah memiliki akun? </span>

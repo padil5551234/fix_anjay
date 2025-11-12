@@ -60,7 +60,11 @@
                                     </td>
                                     <td id="harga">
                                         <p class="font-weight-bold mb-0">
-                                            Rp{{ number_format( $pembelian->harga , 0 , ',' , '.' ) }}</p>
+                                        Rp{{ number_format( $pembelian->harga , 0 , ',' , '.' ) }}
+                                        @if($pembelian->id_voucher)
+                                            <br><small class="text-success">Diskon: Rp{{ number_format($pembelian->voucher->diskon, 0, ',', '.') }}</small>
+                                        @endif
+                                    </p>
                                     </td>
                                     </tr>
                                     <tr>
@@ -90,23 +94,23 @@
                                                     <div class="row">
                                                         <div class="col-lg-9">
                                                             <input type="hidden" required name="id"
-                                                                   value="{{ $pembelian->id }}">
-                                                            <input type="text"
-                                                                   @if($pembelian->voucher_id) @readonly(true) value="{{ $pembelian->voucher->kode }}"
-                                                                   @endif class="form-control" id="voucher"
-                                                                   name="voucher" val
-                                                                   placeholder="Masukkan voucher disini">
+                                                                    value="{{ $pembelian->id }}">
+                                                             <input type="text"
+                                                                    @if($pembelian->id_voucher) @readonly(true) value="{{ $pembelian->voucher->kode }}"
+                                                                    @endif class="form-control" id="voucher"
+                                                                    name="voucher" val
+                                                                    placeholder="Masukkan voucher disini">
                                                         </div>
                                                         @if($pembelian->status == 'Belum dibayar')
                                                             <div class="col-lg-3">
-                                                                <button id="apply" type="submit" class="btn btn-{{ $pembelian->voucher_id ? 'danger' : 'primary' }}">
-                                                                    {!! $pembelian->voucher_id ? '&#x2716;' : '&#x2713;' !!}
+                                                                <button id="apply" type="submit" class="btn btn-{{ $pembelian->id_voucher ? 'danger' : 'primary' }}">
+                                                                    {!! $pembelian->id_voucher ? '&#x2716;' : '&#x2713;' !!}
                                                                 </button>
                                                             </div>
                                                         @endif
                                                     </div>
                                                     <div id="deskripsi">
-                                                        @if($pembelian->voucher_id)
+                                                        @if($pembelian->id_voucher)
                                                             @if($pembelian->voucher->diskon > 0)
                                                                 <span style="color: green; font-size: 12px">Anda mendapatkan diskon Rp{{ number_format( $pembelian->voucher->diskon , 0 , ',' , '.' ) }}</span>
                                                             @endif
@@ -388,6 +392,15 @@
                         .done((response) => {
                             toastr.options = {"positionClass": "toast-bottom-right"};
                             toastr.success(response.message);
+
+                            // Update harga secara real-time jika ada response harga_baru
+                            if (response.harga_baru !== undefined) {
+                                $('#harga p').html('Rp' + new Intl.NumberFormat('id-ID').format(response.harga_baru));
+                                if (response.diskon > 0) {
+                                    $('#harga p').append('<br><small class="text-success">Diskon: Rp' + new Intl.NumberFormat('id-ID').format(response.diskon) + '</small>');
+                                }
+                            }
+
                             setTimeout(function () {
                                 location.reload();
                             }, 1500);

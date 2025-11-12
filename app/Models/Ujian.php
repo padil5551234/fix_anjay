@@ -38,7 +38,10 @@ class Ujian extends Model
         'tampil_poin',
         'random',
         'random_pilihan',
-        'jumlah_soal'
+        'jumlah_soal',
+        'allow_pembahasan_during_test',
+        'pembahasan_access_limit',
+        'pembahasan_access_reason'
     ];
 
     /**

@@ -46,6 +46,7 @@ class DashboardController extends Controller
         return [
             'pakets' => $paketsQuery->get(),
             'faqs' => Faq::orderBy('pinned', 'desc')->orderBy('created_at', 'desc')->get(),
+            'featuredArticles' => Article::published()->featured()->orderBy('published_at', 'desc')->limit(3)->get(),
             'articles' => Article::published()->orderBy('published_at', 'desc')->limit(3)->get(),
         ];
     }
@@ -65,7 +66,7 @@ class DashboardController extends Controller
         $data['pembelian'] = Pembelian::where('status', 'Sukses')
                                 ->where('jenis_pembayaran', '!=', 'Bundling')
                                 ->count();
-        $data['user'] = User::doesntHave('roles')->count();
+        $data['user'] = User::role('user')->count();
         $data['revenue'] = Pembelian::where('status', 'Sukses')
                                 ->where('jenis_pembayaran', '!=', 'Bundling')
                                 ->sum('harga');

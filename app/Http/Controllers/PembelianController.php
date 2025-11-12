@@ -9,7 +9,9 @@ use App\Models\Pembelian;
 use App\Models\PaketUjian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use App\Services\Midtrans\CreateSnapTokenService;
+use App\Mail\PembelianSukses;
 
 class PembelianController extends Controller
 {
@@ -167,7 +169,7 @@ class PembelianController extends Controller
             return response()->json(['message' => 'Invalid.'], 400);
         }
 
-        if ($pembelian->voucher_id == null) {
+        if ($pembelian->id_voucher == null) {
             $voucher = Voucher::where('kode', $request->voucher)
                 ->where('paket_ujian_id', $pembelian->paket_id)
                 ->first();
@@ -175,26 +177,40 @@ class PembelianController extends Controller
                 return response()->json(['message' => 'Kode voucher tidak valid atau tidak sesuai dengan paket ujian.'], 400);
             }
             if ($voucher->kuota > 0) {
+                // Hitung harga setelah diskon, pastikan tidak negatif
+                $hargaAsli = $pembelian->paketUjian->harga;
+                $hargaSetelahDiskon = max(0, $hargaAsli - $voucher->diskon);
+
                 $voucher->kuota = $voucher->kuota - 1;
                 $voucher->update();
-                $pembelian->voucher_id = $voucher->id;
-                $pembelian->harga -= $voucher->diskon;
+                $pembelian->id_voucher = $voucher->id;
+                $pembelian->harga = $hargaSetelahDiskon;
                 $pembelian->update();
 
-                return response()->json(['message' => 'Voucher berhasil digunakan! Diskon Rp' . number_format($voucher->diskon, 0, ',', '.') . ' telah diterapkan.'], 200);
+                return response()->json([
+                    'message' => 'Voucher berhasil digunakan! Diskon Rp' . number_format($voucher->diskon, 0, ',', '.') . ' telah diterapkan.',
+                    'harga_baru' => $hargaSetelahDiskon,
+                    'diskon' => $voucher->diskon
+                ], 200);
             } else {
                 return response()->json(['message' => 'Maaf, kuota voucher sudah habis.'], 400);
             }
         } else {
-            $voucher = Voucher::findOrFail($pembelian->voucher_id);
-            $pembelian->voucher_id = null;
-            $pembelian->harga += $voucher->diskon;
+            $voucher = Voucher::findOrFail($pembelian->id_voucher);
+            // Kembalikan ke harga asli paket
+            $hargaAsli = $pembelian->paketUjian->harga;
+            $pembelian->id_voucher = null;
+            $pembelian->harga = $hargaAsli;
             $pembelian->update();
 
             $voucher->kuota = $voucher->kuota + 1;
             $voucher->update();
 
-            return response()->json(['message' => 'Voucher berhasil dibatalkan.'], 200);
+            return response()->json([
+                'message' => 'Voucher berhasil dibatalkan.',
+                'harga_baru' => $hargaAsli,
+                'diskon' => 0
+            ], 200);
         }
 
         return response()->json(['message' => 'Terjadi kesalahan. Silakan coba lagi.'], 400);
@@ -377,6 +393,14 @@ class PembelianController extends Controller
                 
                 // Store payment success flag in session for showing WhatsApp link
                 session(['payment_success_' . $order_id => true]);
+
+                // Send success email notification
+                try {
+                    Mail::to($pembelian->user->email)->send(new PembelianSukses($pembelian));
+                } catch (\Exception $e) {
+                    // Log error but don't fail the transaction
+                    \Log::error('Failed to send purchase success email: ' . $e->getMessage());
+                }
 
                 if (
                     $pembelian->paket_id ==

@@ -14,6 +14,7 @@
                     <h2>Bimbel Kedinasan Terbaik di Indonesia</h2>
                     <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
 
+                    
                     <div class="text-center text-lg-start">
                         <a href="#pricing" class="btn-get-started scrollto">Show More</a>
                     </div>
@@ -510,11 +511,11 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="tutor-card">
                         <div class="tutor-image">
-                            <img src="{{ asset('img/roland.png') }}" alt="Fajar Fithra Ramadhan">
+                            <img src="{{ asset('img/aulia.png') }}" alt="Kak aulia">
                         </div>
-                        <div class="tutor-info">
-                            <h3>Roland</h3>
-                            <p class="tutor-title">Mahasiswa STIS Angkatan 65</p>
+                        <div class="tutor-info text-center">
+                            <h3>Kak Aulia</h3>
+                            <p class="tutor-title">Mahasiswa STIS Angkatan 62</p>
                             <p class="tutor-desc">Spesialis Matematika dan SKD dengan pengalaman mengajar lebih dari 3 tahun</p>
                         </div>
                     </div>
@@ -523,11 +524,11 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="tutor-card">
                         <div class="tutor-image">
-                            <img src="{{ asset('img/hanif.png') }}" alt="M. Ihsan Silmi Kaffah">
+                            <img src="{{ asset('img/dicky.png') }}" alt="Kak Dicky">
                         </div>
-                        <div class="tutor-info">
-                            <h3>Hanif</h3>
-                            <p class="tutor-title">Mahasiswa STIS Angkatan 65</p>
+                        <div class="tutor-info text-center">
+                            <h3>Kak Dicky</h3>
+                            <p class="tutor-title">Mahasiswa STIS Angkatan 62</p>
                             <p class="tutor-desc">Expert dalam persiapan SPMB STIS dan sekolah kedinasan lainnya</p>
                         </div>
                     </div>
@@ -536,10 +537,10 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="tutor-card">
                         <div class="tutor-image">
-                            <img src="{{ asset('img/padil.jpg') }}" alt="Ananda Natasya">
+                            <img src="{{ asset('img/padil.png') }}" alt="Kak Padil">
                         </div>
-                        <div class="tutor-info">
-                            <h3>Padil</h3>
+                        <div class="tutor-info text-center">
+                            <h3>Kak Padil</h3>
                             <p class="tutor-title">Mahasiswa STIS Angkatan 65</p>
                             <p class="tutor-desc">Berpengalaman dalam membimbing siswa lolos seleksi kedinasan</p>
                         </div>
@@ -547,8 +548,7 @@
                 </div>
             </div>
         </div>
-    </section><!-- End Tutor Section -->
-
+    </section>
     <!-- ======= Articles Section ======= -->
     @if (isset($articles) && $articles->count() > 0)
         <section id="articles" class="articles">
@@ -558,7 +558,40 @@
                     <p>Tips & Strategi Belajar</p>
                 </div>
 
+                <!-- Featured Articles -->
+                @if(isset($featuredArticles) && $featuredArticles->count() > 0)
+                <div class="row mb-5" data-aos="fade-up" data-aos-delay="100">
+                    <div class="col-lg-12">
+                        <h3 class="mb-4">Artikel Unggulan</h3>
+                    </div>
+                    @foreach ($featuredArticles as $featured)
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="tutor-card">
+                                @if($featured->featured_image)
+                                <div class="tutor-image">
+                                    <img src="{{ asset('storage/' . $featured->featured_image) }}" alt="{{ $featured->title }}">
+                                </div>
+                                @endif
+                                <div class="tutor-info">
+                                    <h3>{{ $featured->title }}</h3>
+                                    <p class="tutor-title">
+                                        <span class="badge" style="background-color: var(--primary-color);">{{ ucfirst($featured->category) }}</span>
+                                        <small class="text-muted">{{ $featured->formatted_published_date }}</small>
+                                    </p>
+                                    <p class="tutor-desc">{{ \Illuminate\Support\Str::limit(strip_tags($featured->excerpt), 100) }}</p>
+                                    <a href="{{ route('articles.show', $featured->slug) }}" class="btn-buy" style="display: inline-block; padding: 8px 20px; margin-top: 10px;">Baca Selengkapnya</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                @endif
+
+                <!-- All Articles -->
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
+                    <div class="col-lg-12">
+                        <h3 class="mb-4">{{ isset($featuredArticles) && $featuredArticles->count() > 0 ? 'Artikel Lainnya' : 'Artikel Terbaru' }}</h3>
+                    </div>
                     @foreach ($articles as $article)
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="tutor-card">
@@ -699,144 +732,366 @@
 <style>
 /* Testimonials Section */
 .testimonials {
-    padding: 60px 0;
-    background: #f8f9fa;
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23933aea" opacity="0.03"/><circle cx="75" cy="75" r="1" fill="%23933aea" opacity="0.03"/><circle cx="50" cy="10" r="0.5" fill="%23933aea" opacity="0.02"/><circle cx="10" cy="50" r="0.5" fill="%23933aea" opacity="0.02"/><circle cx="90" cy="30" r="0.5" fill="%23933aea" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
 }
 
 .testimonial-card {
     background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(147, 51, 234, 0.1);
     height: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(147, 51, 234, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover::before {
+    transform: scaleX(1);
 }
 
 .testimonial-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(147, 51, 234, 0.15);
 }
 
 .testimonial-content {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .quote-icon {
-    font-size: 30px;
-    color: var(--primary-color, #4361ee);
-    opacity: 0.3;
-    margin-bottom: 10px;
+    font-size: 36px;
+    color: var(--primary-color);
+    opacity: 0.6;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover .quote-icon {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .testimonial-text {
     font-style: italic;
-    color: #666;
-    line-height: 1.6;
+    color: #555;
+    line-height: 1.7;
     margin-bottom: 0;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 400;
+    position: relative;
+}
+
+.testimonial-text::before {
+    content: '"';
+    font-size: 60px;
+    color: rgba(147, 51, 234, 0.1);
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    font-family: 'Georgia', serif;
+}
+
+.testimonial-text::after {
+    content: '"';
+    font-size: 60px;
+    color: rgba(147, 51, 234, 0.1);
+    position: absolute;
+    bottom: -40px;
+    right: -15px;
+    font-family: 'Georgia', serif;
 }
 
 .testimonial-author {
     display: flex;
     align-items: center;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+    padding-top: 25px;
+    border-top: 2px solid rgba(147, 51, 234, 0.1);
+    margin-top: 25px;
+    position: relative;
 }
 
 .testimonial-author img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    margin-right: 15px;
+    margin-right: 20px;
     object-fit: cover;
-    border: 3px solid #f0f0f0;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover .testimonial-author img {
+    transform: scale(1.05);
+    border-color: var(--primary-hover);
 }
 
 .author-info h4 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2px;
 }
 
 .author-info p {
     margin: 5px 0;
     font-size: 14px;
-    color: #666;
+    color: #718096;
+    font-weight: 500;
 }
 
 .stars {
-    color: #ffc107;
-    font-size: 14px;
+    color: #fbbf24;
+    font-size: 16px;
+    margin-top: 8px;
 }
 
 .stars i {
-    margin-right: 2px;
+    margin-right: 3px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
 }
 
 /* Carousel Customization */
 #testimonialCarousel {
-    padding: 20px 0;
+    padding: 40px 0;
 }
 
 #testimonialCarousel .carousel-indicators {
-    margin-bottom: -30px;
+    margin-bottom: -40px;
+    position: relative;
+    z-index: 10;
 }
 
 #testimonialCarousel .carousel-indicators button {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background-color: var(--primary-color, #4361ee);
-    opacity: 0.5;
-    border: none;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+    opacity: 0.4;
+    border: 2px solid rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 #testimonialCarousel .carousel-indicators button.active {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.3);
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
 }
 
 #testimonialCarousel .carousel-control-prev,
 #testimonialCarousel .carousel-control-next {
-    width: 50px;
-    height: 50px;
-    background-color: var(--primary-color, #4361ee);
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
     border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.8;
+    bottom: -70px;
+    transform: translateX(-50%);
+    opacity: 0.9;
+    top: auto;
+    border: 3px solid rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(147, 51, 234, 0.2);
 }
 
 #testimonialCarousel .carousel-control-prev {
-    left: -60px;
+    left: 45%;
 }
 
 #testimonialCarousel .carousel-control-next {
-    right: -60px;
+    left: 55%;
 }
 
 #testimonialCarousel .carousel-control-prev:hover,
 #testimonialCarousel .carousel-control-next:hover {
     opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(147, 51, 234, 0.3);
 }
 
 #testimonialCarousel .carousel-control-prev-icon,
 #testimonialCarousel .carousel-control-next-icon {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1);
 }
 
-/* Responsive */
+/* Section Title Enhancement */
+.testimonials .section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(147, 51, 234, 0.1);
+}
+
+.testimonials .section-title p {
+    font-size: 1.2rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 1200px) {
+    .testimonial-card {
+        padding: 30px;
+    }
+
+    .testimonial-text {
+        font-size: 15px;
+    }
+
+    .author-info h4 {
+        font-size: 17px;
+    }
+}
+
 @media (max-width: 992px) {
+    .testimonials {
+        padding: 60px 0;
+    }
+
     #testimonialCarousel .carousel-control-prev {
-        left: 0;
+        left: 40%;
     }
-    
+
     #testimonialCarousel .carousel-control-next {
-        right: 0;
+        left: 60%;
     }
+
+    .testimonial-card {
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-author img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .testimonial-text::before,
+    .testimonial-text::after {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonials .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .testimonial-card {
+        padding: 20px;
+    }
+
+    .testimonial-text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .author-info h4 {
+        font-size: 16px;
+    }
+
+    .author-info p {
+        font-size: 13px;
+    }
+
+    #testimonialCarousel .carousel-control-prev,
+    #testimonialCarousel .carousel-control-next {
+        width: 45px;
+        height: 45px;
+        bottom: -50px;
+    }
+
+    #testimonialCarousel .carousel-control-prev {
+        left: 35%;
+    }
+
+    #testimonialCarousel .carousel-control-next {
+        left: 65%;
+    }
+}
+
+@media (max-width: 576px) {
+    .testimonials {
+        padding: 40px 0;
+    }
+
+    .testimonial-card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .testimonial-author {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    .testimonial-author img {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 65px;
+        height: 65px;
+    }
+
+    .testimonial-content {
+        margin-bottom: 20px;
+    }
+
+    .quote-icon {
+        font-size: 28px;
+    }
+
+    .testimonial-text {
+        font-size: 14px;
+    }
+
+    #testimonialCarousel .carousel-control-prev,
+    #testimonialCarousel .carousel-control-next {
+        display: none;
+    }
+
+    #testimonialCarousel .carousel-indicators {
+        margin-bottom: -20px;
+    }
+}
+
+/* Tutor Section */
+.tutors .tutor-info h3 {
+    text-align: center;
+    color: var(--primary-color);
 }
 </style>
 @endpush

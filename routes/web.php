@@ -351,6 +351,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         UjianController::class,
         'storeRagu',
     ])->name('ujian.ragu');
+    
+    // Discussion access during test routes
+    Route::get('/ujian/{ujianId}/pembahasan/{soalId}', [
+        UjianController::class,
+        'showPembahasanDuringTest',
+    ])->name('ujian.pembahasan.during_test');
+    Route::get('/ujian/{ujianId}/pembahasan-status', [
+        UjianController::class,
+        'getPembahasanAccessStatus',
+    ])->name('ujian.pembahasan.status');
+    // Discussion access after test completion
+    Route::get('/ujian/{ujianId}/pembahasan-after/{soalId}', [
+        UjianController::class,
+        'showPembahasanAfterTest',
+    ])->name('ujian.pembahasan.after_test');
     // Route::get('/ujian/nilai/{id}', [UjianController::class, 'nilai'])->name('ujian.nilai');
 });
 
@@ -418,7 +433,7 @@ Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name(
 Route::get('/auth/google/callback', [
     GoogleController::class,
     'handleGoogleCallback',
-])->name('google.callback');
+])->name('google.callback')->middleware('web');
 
 Route::get('/redirects', function () {
     $user = Auth::user();

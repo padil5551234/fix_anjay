@@ -43,13 +43,33 @@ class Article extends Model
 
         static::creating(function ($article) {
             if (empty($article->slug)) {
-                $article->slug = Str::slug($article->title);
+                $baseSlug = Str::slug($article->title);
+                $slug = $baseSlug;
+                $counter = 1;
+                
+                // Check if slug already exists, add counter if needed
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+                
+                $article->slug = $slug;
             }
         });
 
         static::updating(function ($article) {
             if ($article->isDirty('title')) {
-                $article->slug = Str::slug($article->title);
+                $baseSlug = Str::slug($article->title);
+                $slug = $baseSlug;
+                $counter = 1;
+                
+                // Check if slug already exists (excluding current article), add counter if needed
+                while (static::where('slug', $slug)->where('id', '!=', $article->id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+                
+                $article->slug = $slug;
             }
         });
     }

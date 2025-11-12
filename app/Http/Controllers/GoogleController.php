@@ -15,28 +15,34 @@ class GoogleController extends Controller
     }
 
     public function handleGoogleCallback() {
-        $user = Socialite::driver('google')->user();
+        try {
+            $user = Socialite::driver('google')->user();
 
-        $findUser = User::where(function ($q) use ($user) {
-                        $q->where('google_id', $user->getId())->orWhere('email', $user->getEmail());
-                    })
-                    ->first();
+            $findUser = User::where(function ($q) use ($user) {
+                            $q->where('google_id', $user->getId())->orWhere('email', $user->getEmail());
+                        })
+                        ->first();
 
-        if ($findUser) {
-            Auth::login($findUser);
-            return redirect('/redirects');
-        } else {
-            $newUser = User::create([
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'google_id' => $user->getId(),
-                'email_verified_at' => Carbon::now(),
-                'password' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, eligendi.',
-            ]);
+            if ($findUser) {
+                Auth::login($findUser);
+                return redirect('/redirects');
+            } else {
+                $newUser = User::create([
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'google_id' => $user->getId(),
+                    'email_verified_at' => Carbon::now(),
+                    'password' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, eligendi.',
+                ]);
 
-            Auth::login($newUser);
-            return redirect('/redirects');
+                Auth::login($newUser);
+                return redirect('/redirects');
+            }
+        } catch (\Exception $e) {
+            return redirect('/login')->withErrors(['google' => 'Gagal login dengan Google. Silakan coba lagi.']);
         }
     }
 
 }
+
+

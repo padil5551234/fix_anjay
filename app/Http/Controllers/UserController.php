@@ -24,7 +24,7 @@ class UserController extends Controller
     public function data()
     {
         $users = User::with('usersDetail')
-                ->doesntHave('roles')
+                ->role('user')
                 ->orderBy('created_at', 'desc');
 
         return datatables()

@@ -114,6 +114,8 @@ class UjianController extends Controller
                 'tampil_poin' => 'required|in:0,1',
                 'random' => 'required|in:0,1',
                 'random_pilihan' => 'required|in:0,1',
+                'allow_pembahasan_during_test' => 'nullable|in:0,1',
+                'pembahasan_access_limit' => 'nullable|integer|min:1',
             ], [
                 'nama.required' => 'Nama ujian harus diisi',
                 'jenis_ujian.required' => 'Jenis ujian harus dipilih',
@@ -142,6 +144,9 @@ class UjianController extends Controller
             $ujian->tampil_poin = $request->tampil_poin;
             $ujian->random = $request->random;
             $ujian->random_pilihan = $request->random_pilihan;
+            $ujian->allow_pembahasan_during_test = $request->allow_pembahasan_during_test ?? false;
+            $ujian->pembahasan_access_limit = $request->pembahasan_access_limit;
+            $ujian->pembahasan_access_reason = $request->pembahasan_access_reason;
 
             $ujian->save();
             
@@ -207,6 +212,8 @@ class UjianController extends Controller
             'tampil_poin' => 'required',
             'random' => 'required',
             'random_pilihan' => 'required',
+            'allow_pembahasan_during_test' => 'nullable|in:0,1',
+            'pembahasan_access_limit' => 'nullable|integer|min:1',
         ]);
 
         $ujian = Ujian::findOrFail($id);
@@ -226,6 +233,9 @@ class UjianController extends Controller
         $ujian->tampil_poin = $request->tampil_poin;
         $ujian->random = $request->random;
         $ujian->random_pilihan = $request->random_pilihan;
+        $ujian->allow_pembahasan_during_test = $request->allow_pembahasan_during_test ?? false;
+        $ujian->pembahasan_access_limit = $request->pembahasan_access_limit;
+        $ujian->pembahasan_access_reason = $request->pembahasan_access_reason;
         $ujian->update();
         
         // Sync packages
