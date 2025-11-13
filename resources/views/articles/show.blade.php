@@ -50,7 +50,7 @@
 
                 <!-- Article Content -->
                 <div class="article-content">
-                    {!! nl2br(e($article->content)) !!}
+                    {!! $article->content !!}
                 </div>
 
                 <!-- Tags -->

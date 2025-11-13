@@ -78,6 +78,7 @@
     </style>
 
     @stack('links')
+    @stack('styles')
 </head>
 
 <body>
