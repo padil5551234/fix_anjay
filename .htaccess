@@ -7,6 +7,7 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /bimbel/tryout-master/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

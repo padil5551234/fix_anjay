@@ -433,7 +433,7 @@ Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name(
 Route::get('/auth/google/callback', [
     GoogleController::class,
     'handleGoogleCallback',
-])->name('google.callback')->middleware('web');
+])->name('google.callback');
 
 Route::get('/redirects', function () {
     $user = Auth::user();

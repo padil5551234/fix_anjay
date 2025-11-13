@@ -25,7 +25,7 @@ class GoogleController extends Controller
 
             if ($findUser) {
                 Auth::login($findUser);
-                return redirect('/redirects');
+                return redirect()->route('dashboard');
             } else {
                 $newUser = User::create([
                     'name' => $user->getName(),
@@ -36,7 +36,7 @@ class GoogleController extends Controller
                 ]);
 
                 Auth::login($newUser);
-                return redirect('/redirects');
+                return redirect()->route('dashboard');
             }
         } catch (\Exception $e) {
             return redirect('/login')->withErrors(['google' => 'Gagal login dengan Google. Silakan coba lagi.']);
