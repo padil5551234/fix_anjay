@@ -27,23 +27,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        // Handle subdirectory routing
-        $request = $this->app['request'];
-        $path = $request->path();
-        if (str_starts_with($path, 'bimbel/tryout-master/')) {
-            $newPath = substr($path, strlen('bimbel/tryout-master/'));
-            $request->server->set('REQUEST_URI', '/' . $newPath . ($request->getQueryString() ? '?' . $request->getQueryString() : ''));
-            $request->initialize(
-                $request->query->all(),
-                $request->request->all(),
-                $request->attributes->all(),
-                $request->cookies->all(),
-                $request->files->all(),
-                $request->server->all(),
-                $request->getContent()
-            );
-        }
-
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

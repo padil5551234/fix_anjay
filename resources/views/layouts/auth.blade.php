@@ -42,7 +42,7 @@
 
 <body style="margin: 0; padding: 0; overflow-x: hidden;">
     <div id="app" style="min-height: 100vh;">
-        @if(Request::is('login') || Request::is('register') || Request::is('forgot-password') || Request::is('password/reset/*'))
+        @if(Request::is('login') || Request::is('register') || Request::is('forgot-password') || Request::is('password/reset/*') || Request::is('reset-password/*'))
             <!-- Content for login, register, forgot-password and reset-password with background -->
             @yield('main')
         @else
