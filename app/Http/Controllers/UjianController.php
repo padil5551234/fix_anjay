@@ -171,7 +171,8 @@ class UjianController extends Controller
         }
 
         if ($ujianUser->status == 2) {
-            abort(403, 'Anda sudah mengerjakan ujian ini');
+            // Redirect to results page instead of showing error
+            return redirect()->route('tryout.nilai', $ujianUser->ujian_id);
         }
 
         $preparation = JawabanPeserta::with(['soal', 'soal.jawaban' => function ($q) use ($ujianUser)
@@ -195,7 +196,9 @@ class UjianController extends Controller
     public function pembahasan($id) {
         $ujian = Ujian::with('ujianUser')->findOrFail($id);
         $ujianUser = UjianUser::where('ujian_id', $id)->where('user_id', auth()->user()->id)->first();
-        if (!(($ujian->tampil_kunci == 1 && $ujianUser) || ($ujian->tampil_kunci == 2 && Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && Carbon::now() > $ujian->waktu_pengumuman))) {
+        // Allow access if user has completed the exam (status == 2) or based on existing rules
+        $hasCompletedExam = $ujianUser && $ujianUser->status == 2;
+        if (!($hasCompletedExam || ($ujian->tampil_kunci == 1 && $ujianUser) || ($ujian->tampil_kunci == 2 && Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && Carbon::now() > $ujian->waktu_pengumuman))) {
             abort(403, 'ERROR');
         }
 
@@ -220,8 +223,9 @@ class UjianController extends Controller
         $ujian = Ujian::findOrFail($ujianId);
         $ujianUser = UjianUser::where('ujian_id', $ujianId)->where('user_id', auth()->user()->id)->first();
 
-        // Check if user has access to view answers/discussion
-        if (!(($ujian->tampil_kunci == 1 && $ujianUser) || ($ujian->tampil_kunci == 2 && Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && Carbon::now() > $ujian->waktu_pengumuman))) {
+        // Allow access if user has completed the exam (status == 2) or based on existing rules
+        $hasCompletedExam = $ujianUser && $ujianUser->status == 2;
+        if (!($hasCompletedExam || ($ujian->tampil_kunci == 1 && $ujianUser) || ($ujian->tampil_kunci == 2 && Carbon::now() > $ujian->waktu_akhir) || ($ujian->tampil_kunci == 3 && Carbon::now() > $ujian->waktu_pengumuman))) {
             return response()->json([
                 'error' => true,
                 'message' => 'Anda tidak memiliki akses ke pembahasan saat ini.'
@@ -550,6 +554,47 @@ class UjianController extends Controller
     public function update(Request $request, Ujian $ujian)
     {
         //
+    }
+
+    /**
+     * Show global ranking for completed tryouts
+     */
+    public function rankingGlobal()
+    {
+        // Get all completed exams for the current user
+        $completedExams = UjianUser::with(['ujian', 'user'])
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 2) // completed
+            ->where('is_first', 1) // only first attempts
+            ->orderBy('nilai', 'desc')
+            ->get();
+
+        // Calculate total score across all completed exams
+        $totalScore = $completedExams->sum('nilai');
+        $totalExams = $completedExams->count();
+
+        // Get rankings for each exam type
+        $examRankings = [];
+        foreach ($completedExams as $examUser) {
+            $ranking = UjianUser::where('ujian_id', $examUser->ujian_id)
+                ->where('status', 2)
+                ->where('is_first', 1)
+                ->orderBy('nilai', 'desc')
+                ->pluck('user_id')
+                ->search(auth()->user()->id) + 1;
+
+            $examRankings[] = [
+                'exam' => $examUser->ujian,
+                'score' => $examUser->nilai,
+                'rank' => $ranking,
+                'total_participants' => UjianUser::where('ujian_id', $examUser->ujian_id)
+                    ->where('status', 2)
+                    ->where('is_first', 1)
+                    ->count()
+            ];
+        }
+
+        return view('views_user.ranking.global', compact('completedExams', 'totalScore', 'totalExams', 'examRankings'));
     }
 
     /**

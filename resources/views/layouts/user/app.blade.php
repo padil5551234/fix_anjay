@@ -110,38 +110,77 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-12">
-                        <div class="footer-info">
-                            <div class="d-flex flex-row">
-                                <div class="col-lg-8">
-                                    <h3><img src="{{ asset('img/logo.png') }}" alt="Logo Platform" width="5%" class="mb-2"> Try Out Online</h3>
-                                    <p class="pb-3"><em>Platform try out online terpercaya yang menyediakan berbagai program Try Out dan Bimbingan untuk membantu para calon mahasiswa mempersiapkan ujian masuk perguruan tinggi. Kami menyediakan soal-soal berkualitas dan sistem evaluasi yang komprehensif untuk mendukung persiapan ujian yang optimal.</em></p>
-                                </div>
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-3 mt-5">
-                                    <p class="mt-4">
-                                        Jalan Otto Iskandar Dinata 64C <br>
-                                        Jakarta Timur, DKI Jakarta<br><br>
-                                        <strong>Email:</strong> <a style="color: inherit;" href="mailto:admin@tryout-online.com">admin@tryout-online.com</a><br>
-                                    </p>
-                                    <div class="social-links mt-3">
-                                        <a href="https://www.whatsapp.com/channel/0029Vb6tAJ97IUYPkGCzF43g" target="_blank" class="twitter"><i class="bx bxl-whatsapp"></i></a>
-                                        <a href="https://twitter.com/TryOutOnline" target="_blank" class="twitter"><i class="bx bxl-twitter"></i></a>
-                                        <a href="https://www.facebook.com/BimbelSTIS/" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a>
-                                        <a href="https://www.instagram.com/bocah_kedinasan/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
-                                        <a href="https://www.youtube.com/@BimbelStis" target="_blank" class="youtube"><i class="bx bxl-youtube"></i></a>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Company Info -->
+                    <div class="col-lg-4 col-md-6 footer-info">
+                        <h3><img src="{{ asset('img/logo.png') }}" alt="Logo Platform" width="8%" class="mb-2"> Try Out Online</h3>
+                        <p>Platform try out online terpercaya yang menyediakan berbagai program Try Out dan Bimbingan untuk membantu para calon mahasiswa mempersiapkan ujian masuk perguruan tinggi.</p>
+                        <div class="social-links mt-3">
+                            <a href="https://www.whatsapp.com/channel/0029Vb6tAJ97IUYPkGCzF43g" target="_blank" class="whatsapp"><i class="bx bxl-whatsapp"></i></a>
+                            <a href="https://twitter.com/TryOutOnline" target="_blank" class="twitter"><i class="bx bxl-twitter"></i></a>
+                            <a href="https://www.facebook.com/BimbelSTIS/" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a>
+                            <a href="https://www.instagram.com/bocah_kedinasan/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="https://www.youtube.com/@BimbelStis" target="_blank" class="youtube"><i class="bx bxl-youtube"></i></a>
                         </div>
                     </div>
+
+                    <!-- Quick Links -->
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Menu Utama</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('dashboard') }}">Dashboard</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('tryout.index') }}">Try Out</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('ranking.global') }}">Ranking</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('pembelian.index') }}">Pembelian</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('faq.index') }}">FAQ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Layanan</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('tryout.index') }}">Try Out Online</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('ranking.global') }}">Ranking Global</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('pengumuman.index') }}">Pengumuman</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('faq.index') }}">FAQ</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="{{ route('user.materials.index') }}">Materi</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="col-lg-4 col-md-6 footer-contact">
+                        <h4>Kontak Kami</h4>
+                        <p>
+                            Jalan Otto Iskandar Dinata 64C<br>
+                            Jakarta Timur, DKI Jakarta<br><br>
+                            <strong>Phone:</strong> +62 812-3456-7890<br>
+                            <strong>Email:</strong> <a href="mailto:admin@tryout-online.com" style="color: inherit;">admin@tryout-online.com</a><br>
+                        </p>
+                        <div class="newsletter mt-3">
+                            <h5>Dapatkan Update Terbaru</h5>
+                            <form action="#" method="post" class="d-flex">
+                                <input type="email" name="email" class="form-control me-2" placeholder="Email Anda" required>
+                                <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <div class="copyright">
-                Copyright &copy; Try Out Online Platform 2025
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="copyright">
+                        &copy; 2025 <strong>Try Out Online Platform</strong>. All Rights Reserved.
+                    </div>
+                </div>
+                <div class="col-lg-6 text-end">
+                    <div class="credits">
+                        Designed by <a href="#" style="color: inherit;">Try Out Online Team</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer><!-- End Footer -->

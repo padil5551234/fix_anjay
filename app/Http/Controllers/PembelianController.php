@@ -218,48 +218,46 @@ class PembelianController extends Controller
 
     public function pay(Request $request)
     {
-        $pembelian = Pembelian::findOrFail($request->id);
-        $snapToken = $pembelian->kode_pembelian;
-        $total = 0;
-        $item_details[] = [
-            'id' => $pembelian->paketUjian->id,
-            'price' => $pembelian->harga,
-            'quantity' => 1,
-            'name' => $pembelian->paketUjian->nama,
-        ];
-        $total += $pembelian->harga;
-
-        if ($request->metode == 'bank-transfer') {
+        try {
+            $pembelian = Pembelian::findOrFail($request->id);
+            $snapToken = $pembelian->kode_pembelian;
+            $total = 0;
             $item_details[] = [
-                'id' => 999999,
-                'price' => 4500,
+                'id' => $pembelian->paketUjian->id,
+                'price' => $pembelian->harga,
                 'quantity' => 1,
-                'name' => 'Biaya admin',
+                'name' => $pembelian->paketUjian->nama,
             ];
-            $total += 4500;
-        }
+            $total += $pembelian->harga;
 
-        $midtrans = new CreateSnapTokenService(
-            $pembelian,
-            $request->metode,
-            $item_details,
-            $total
-        );
-        $snapToken = $midtrans->getSnapToken($request->metode_pembayaran);
+            if ($request->metode == 'bank-transfer') {
+                $item_details[] = [
+                    'id' => 999999,
+                    'price' => 4500,
+                    'quantity' => 1,
+                    'name' => 'Biaya admin',
+                ];
+                $total += 4500;
+            }
 
-        $pembelian->kode_pembelian = $snapToken;
-        $pembelian->update();
+            $midtrans = new CreateSnapTokenService(
+                $pembelian,
+                $request->metode,
+                $item_details,
+                $total
+            );
+            $snapToken = $midtrans->getSnapToken($request->metode_pembayaran);
 
-        return response()->json(
-            [
-                'snapToken' => $snapToken,
-                'metode' => $request->metode,
-            ],
-            200
-        );
+            if (is_null($snapToken) || empty($snapToken)) {
+                return response()->json(
+                    'Tidak dapat membayar, silahkan hubungi admin.',
+                    400
+                );
+            }
 
-        if (is_null($snapToken)) {
-        } else {
+            $pembelian->kode_pembelian = $snapToken;
+            $pembelian->update();
+
             return response()->json(
                 [
                     'snapToken' => $snapToken,
@@ -267,11 +265,13 @@ class PembelianController extends Controller
                 ],
                 200
             );
+        } catch (\Exception $e) {
+            \Log::error('Payment error: ' . $e->getMessage());
+            return response()->json(
+                'Tidak dapat membayar, silahkan hubungi admin.',
+                400
+            );
         }
-        return response()->json(
-            'Tidak dapat membayar, silahkan hubungi admin.',
-            300
-        );
     }
 
     /**
@@ -382,6 +382,15 @@ class PembelianController extends Controller
                 $pembelian = Pembelian::find($order_id);
                 $pembelian->status = 'Sukses';
                 $pembelian->jenis_pembayaran = $request->payment_type;
+                // Log QRIS payment success for debugging
+                if ($request->payment_type == 'qris') {
+                    \Log::info('QRIS payment successful', [
+                        'order_id' => $request->order_id,
+                        'transaction_status' => $request->transaction_status,
+                        'payment_type' => $request->payment_type,
+                        'gross_amount' => $request->gross_amount
+                    ]);
+                }
                 $pembelian->update();
                 $user_id = $pembelian->user_id;
                 

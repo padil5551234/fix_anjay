@@ -68,8 +68,8 @@ class FaqController extends Controller
         ]);
 
         $faq = new Faq();
-        $faq->title = $request->title;
-        $faq->content = $request->content;
+        $faq->title = $request->input('title');
+        $faq->content = $request->input('content');
         $faq->author_id = auth()->id();
 
         $faq->save();
@@ -80,7 +80,7 @@ class FaqController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pengumuman $pengumuman)
+    public function show(Faq $faq)
     {
         //
     }
@@ -109,8 +109,8 @@ class FaqController extends Controller
         ]);
 
         $faq = Faq::findOrFail($id);
-        $faq->title = $request->title;
-        $faq->content = $request->content;
+        $faq->title = $request->input('title');
+        $faq->content = $request->input('content');
         $faq->author_id = auth()->id();
 
         $faq->update();

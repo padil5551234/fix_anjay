@@ -135,16 +135,6 @@
                 @endrole
                 
                 <li class="nav-header">Konten & Informasi</li>
-                @role('admin|panitia|bendahara')
-                <li class="nav-item">
-                    <a href="{{ route('admin.pengumuman.index') }}" class="nav-link {{ request()->segment(2) == 'pengumuman' ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-bullhorn"></i>
-                        <p>
-                            Pengumuman
-                        </p>
-                    </a>
-                </li>
-                @endrole
                 @role('admin')
                 <li class="nav-item">
                     <a href="{{ route('admin.article.index') }}" class="nav-link {{ request()->segment(2) == 'article' ? 'active' : '' }}">

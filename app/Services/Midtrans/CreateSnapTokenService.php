@@ -18,7 +18,7 @@ class CreateSnapTokenService extends Midtrans
         $this->total = $total;
     }
 
-    public function getSnapToken()
+    public function getSnapToken($paymentMethod = null)
     {
         $params = [
             'transaction_details' => [
@@ -29,9 +29,17 @@ class CreateSnapTokenService extends Midtrans
             'customer_details' => [
                 'first_name' => auth()->user()->name,
                 'email' => auth()->user()->email,
-                'phone' => auth()->user()->usersDetail ? auth()->user()->usersDetail->no_hp : '-',
-            ]
+            ] + (auth()->user()->usersDetail && auth()->user()->usersDetail->no_hp ? ['phone' => auth()->user()->usersDetail->no_hp] : [])
         ];
+
+        // Handle specific payment methods
+        if ($paymentMethod === 'qris') {
+            $params['enabled_payments'] = ['qris'];
+            \Log::info('Generating QRIS Snap Token', ['order_id' => $this->pembelian->id, 'total' => $this->total]);
+        } elseif ($paymentMethod === 'bank-transfer') {
+            $params['enabled_payments'] = ['bank_transfer'];
+        }
+
         // return dd($params);
 
         $snapToken = Snap::getSnapToken($params);

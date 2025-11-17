@@ -127,28 +127,22 @@
                                         </td>
                                         <td>
                                             @if($pembelian->status != 'Sukses' && $pembelian->status != 'Menunggu Verifikasi')
-                                                <div class="form-check">
+                                                <div class="form-check payment-method">
                                                     <input class="form-check-input" type="radio"
                                                            name="metode_pembayaran" id="metode_pembayaran3"
                                                            value="manual-transfer" checked>
                                                     <label class="form-check-label" for="metode_pembayaran3">
+                                                        <i class="fas fa-upload text-primary me-2"></i>
                                                         <strong>Transfer Manual</strong> (Upload Bukti)
                                                     </label>
                                                 </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                           name="metode_pembayaran" id="metode_pembayaran1"
-                                                           value="other-qris">
-                                                    <label class="form-check-label" for="metode_pembayaran1">
-                                                        QRIS (Otomatis)
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
+                                                <div class="form-check payment-method">
                                                     <input class="form-check-input" type="radio"
                                                            name="metode_pembayaran" id="metode_pembayaran2"
                                                            value="bank-transfer">
                                                     <label class="form-check-label" for="metode_pembayaran2">
-                                                        Transfer Bank Otomatis (+ Admin 4500)
+                                                        <i class="fas fa-university text-primary me-2"></i>
+                                                        <strong>Transfer Bank Otomatis</strong> (+ Admin 4500)
                                                     </label>
                                                 </div>
                                             @else
@@ -307,7 +301,7 @@
             // Handle proceed payment button
             function proceedPayment() {
                 const metode = document.querySelector('input[name="metode_pembayaran"]:checked').value;
-                
+
                 if (metode === 'manual-transfer') {
                     // Show upload modal for manual transfer
                     var uploadModal = new bootstrap.Modal(document.getElementById('uploadBuktiModal'));

@@ -1011,6 +1011,115 @@ section {
     background: var(--bg-dark);
 }
 
+/* Footer Links */
+#footer .footer-links {
+    padding-left: 0;
+    list-style: none;
+}
+
+#footer .footer-links li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+#footer .footer-links li i {
+    padding-right: 8px;
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+#footer .footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: var(--transition-base);
+    font-size: 14px;
+}
+
+#footer .footer-links a:hover {
+    color: var(--text-white);
+    text-decoration: none;
+    transform: translateX(5px);
+}
+
+#footer .footer-links h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Footer Contact */
+#footer .footer-contact h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#footer .footer-contact p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+#footer .footer-contact strong {
+    color: var(--text-white);
+}
+
+/* Newsletter */
+#footer .newsletter h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 10px;
+}
+
+#footer .newsletter input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-white);
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+}
+
+#footer .newsletter input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#footer .newsletter input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+#footer .newsletter .btn {
+    background: var(--primary-color);
+    border: none;
+    color: var(--text-white);
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition-base);
+}
+
+#footer .newsletter .btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Footer Bottom */
+#footer .credits {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+}
+
 /* Back to top button */
 .back-to-top {
     position: fixed;
@@ -1166,4 +1275,68 @@ section {
 
 .badge-primary {
     background-color: var(--primary-color) !important;
+}
+
+/* Payment Methods Styling */
+.payment-method {
+    border: 2px solid var(--bg-gray);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    background: var(--bg-white);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.payment-method:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.payment-method input:checked + label {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.payment-method i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.payment-method label {
+    cursor: pointer;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+/* Purchase Page Typography Improvements */
+.card h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.table td h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.table td p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.btn-success {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
 }

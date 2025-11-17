@@ -130,20 +130,6 @@ Route::prefix('admin')
         );
     });
 
-//route data pengumuman
-Route::prefix('admin')
-    ->name('admin.')
-    ->middleware(['auth', 'verified', 'role:admin|panitia|bendahara'])
-    ->group(function () {
-        Route::get('/pengumuman/data', [
-            \App\Http\Controllers\Admin\PengumumanController::class,
-            'data',
-        ])->name('pengumuman.data');
-        Route::resource(
-            'pengumuman',
-            \App\Http\Controllers\Admin\PengumumanController::class
-        );
-    });
 
 //route data bank soal
 Route::prefix('admin')
@@ -327,6 +313,9 @@ Route::middleware(['auth', 'verified', 'profiled'])->group(function () {
     ])->name('tryout.pembahasan');
     Route::get('/tryout/{id}/nilai', [UjianController::class, 'nilai'])->name(
         'tryout.nilai'
+    );
+    Route::get('/ranking/global', [UjianController::class, 'rankingGlobal'])->name(
+        'ranking.global'
     );
     // Route::resource('tryout', UjianController::class);
 });

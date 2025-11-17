@@ -16,6 +16,7 @@
         @auth
             <li class="dropdown"><a href="#"><span>{{ auth()->user()->name }}</span> <i class="bi bi-chevron-down"></i></a>
                 <ul>
+                    <li><a href="{{ route('ranking.global') }}">Peringkat Global</a></li>
                     <li><a href="{{ route('profile.show') }}">Profile</a></li>
                     <li><a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a></li>
                 </ul>
