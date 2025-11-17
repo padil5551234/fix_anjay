@@ -42,7 +42,9 @@ class LiveClassController extends Controller
      */
     public function create()
     {
-        return view('tutor.live-classes.create');
+        $paketUjians = \App\Models\PaketUjian::all(); // Or filter based on tutor's access if needed
+
+        return view('tutor.live-classes.create', compact('paketUjians'));
     }
 
     /**
@@ -51,6 +53,7 @@ class LiveClassController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'batch_id' => 'required|exists:paket_ujian,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'meeting_link' => 'nullable|url',
@@ -69,6 +72,7 @@ class LiveClassController extends Controller
         }
 
         $liveClass = Auth::user()->liveClasses()->create([
+            'batch_id' => $request->batch_id,
             'title' => $request->title,
             'description' => $request->description,
             'meeting_link' => $request->meeting_link,
@@ -101,8 +105,10 @@ class LiveClassController extends Controller
     public function edit(LiveClass $liveClass)
     {
         $this->authorize('update', $liveClass);
-        
-        return view('tutor.live-classes.edit', compact('liveClass'));
+
+        $paketUjians = \App\Models\PaketUjian::all(); // Or filter based on tutor's access if needed
+
+        return view('tutor.live-classes.edit', compact('liveClass', 'paketUjians'));
     }
 
     /**
@@ -113,6 +119,7 @@ class LiveClassController extends Controller
         $this->authorize('update', $liveClass);
 
         $validator = Validator::make($request->all(), [
+            'batch_id' => 'required|exists:paket_ujian,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'meeting_link' => 'nullable|url',
@@ -131,6 +138,7 @@ class LiveClassController extends Controller
         }
 
         $liveClass->update([
+            'batch_id' => $request->batch_id,
             'title' => $request->title,
             'description' => $request->description,
             'meeting_link' => $request->meeting_link,

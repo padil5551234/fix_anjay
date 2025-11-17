@@ -32,19 +32,13 @@ class UserMaterialController extends Controller
 
         $query = Material::query();
 
-        // Filter materials by purchased packages or public materials
-        $query->where(function($q) use ($purchasedPackages) {
-            $q->where('is_public', true);
-
-            if ($purchasedPackages->isNotEmpty()) {
-                $packageIds = $purchasedPackages->pluck('id');
-                $q->orWhereIn('batch_id', $packageIds);
-            }
-        });
-
-        // If user has no purchases and no public materials, show empty state
-        if ($purchasedPackages->isEmpty()) {
-            $query->where('is_public', true);
+        // Filter materials by purchased packages only
+        if ($purchasedPackages->isNotEmpty()) {
+            $packageIds = $purchasedPackages->pluck('id');
+            $query->whereIn('batch_id', $packageIds);
+        } else {
+            // If user has no purchases, show no materials
+            $query->whereRaw('1 = 0');
         }
 
         // Filter by type
@@ -84,19 +78,16 @@ class UserMaterialController extends Controller
         // Check if user has purchased access to this material
         $hasFullAccess = false;
         $isPreviewMode = false;
-        
-        if ($material->is_public) {
-            $hasFullAccess = true;
-        } else {
-            $hasFullAccess = Pembelian::forUser($user->id)
-                ->forPackage($material->batch_id)
-                ->verified()
-                ->exists();
-            
-            // If no access, show preview mode
-            if (!$hasFullAccess) {
-                $isPreviewMode = true;
-            }
+
+        // Only allow access if user has purchased the package
+        $hasFullAccess = Pembelian::forUser($user->id)
+            ->forPackage($material->batch_id)
+            ->verified()
+            ->exists();
+
+        // If no access, show preview mode
+        if (!$hasFullAccess) {
+            $isPreviewMode = true;
         }
 
         // Increment views
@@ -118,15 +109,13 @@ class UserMaterialController extends Controller
         }
 
         // Check if user has verified access
-        if (!$material->is_public) {
-            $hasAccess = Pembelian::forUser($user->id)
-                ->forPackage($material->batch_id)
-                ->verified()
-                ->exists();
-            
-            if (!$hasAccess) {
-                abort(403, 'Anda tidak memiliki akses untuk mengunduh materi ini. Pastikan pembayaran paket sudah diverifikasi.');
-            }
+        $hasAccess = Pembelian::forUser($user->id)
+            ->forPackage($material->batch_id)
+            ->verified()
+            ->exists();
+
+        if (!$hasAccess) {
+            abort(403, 'Anda tidak memiliki akses untuk mengunduh materi ini. Pastikan pembayaran paket sudah diverifikasi.');
         }
 
         // Increment downloads

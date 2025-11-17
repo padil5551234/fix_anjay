@@ -21,8 +21,23 @@
                         @csrf
                         
                         <div class="form-group">
+                            <label for="batch_id">Paket Ujian <span class="text-danger">*</span></label>
+                            <select name="batch_id" id="batch_id" class="form-control @error('batch_id') is-invalid @enderror" required>
+                                <option value="">Pilih paket ujian</option>
+                                @foreach($paketUjians as $paket)
+                                    <option value="{{ $paket->id }}" {{ old('batch_id') == $paket->id ? 'selected' : '' }}>
+                                        {{ $paket->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('batch_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="title">Judul Kelas <span class="text-danger">*</span></label>
-                            <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" 
+                            <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror"
                                    placeholder="Masukkan judul kelas" value="{{ old('title') }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -31,7 +46,7 @@
 
                         <div class="form-group">
                             <label for="description">Deskripsi</label>
-                            <textarea name="description" id="description" rows="3" class="form-control @error('description') is-invalid @enderror" 
+                            <textarea name="description" id="description" rows="3" class="form-control @error('description') is-invalid @enderror"
                                       placeholder="Deskripsi kelas">{{ old('description') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
