@@ -64,7 +64,7 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'batch_id' => 'nullable|exists:paket_ujian,id',
+            'batch_id' => 'required|exists:paket_ujian,id',
             'title' => 'required|string|max:255',
             'mapel' => 'nullable|string|max:100',
             'description' => 'nullable|string',
@@ -169,7 +169,7 @@ class MaterialController extends Controller
         $this->authorize('update', $material);
 
         $validator = Validator::make($request->all(), [
-            'batch_id' => 'nullable|exists:paket_ujian,id',
+            'batch_id' => 'required|exists:paket_ujian,id',
             'title' => 'required|string|max:255',
             'mapel' => 'nullable|string|max:100',
             'description' => 'nullable|string',

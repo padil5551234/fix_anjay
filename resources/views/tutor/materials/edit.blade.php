@@ -23,10 +23,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="batch_id">Paket / Batch <small class="text-muted">(Opsional)</small></label>
-                                    <select name="batch_id" id="batch_id" class="form-control">
-                                        <option value="">Pilih Paket (Opsional)</option>
-                                        @foreach(\App\Models\PaketUjian::all() as $paket)
+                                    <label for="batch_id">Paket / Batch <span class="text-danger">*</span></label>
+                                    <select name="batch_id" id="batch_id" class="form-control" required>
+                                        <option value="">Pilih Paket</option>
+                                        @foreach($paketUjians as $paket)
                                             <option value="{{ $paket->id }}" {{ old('batch_id', $material->batch_id) == $paket->id ? 'selected' : '' }}>
                                                 {{ $paket->nama }}
                                             </option>

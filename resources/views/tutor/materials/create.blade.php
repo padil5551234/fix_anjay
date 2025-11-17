@@ -39,16 +39,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="batch_id">Paket Ujian (Opsional)</label>
-                            <select name="batch_id" id="batch_id" class="form-control @error('batch_id') is-invalid @enderror">
-                                <option value="">Pilih paket ujian (opsional)</option>
+                            <label for="batch_id">Paket Ujian <span class="text-danger">*</span></label>
+                            <select name="batch_id" id="batch_id" class="form-control @error('batch_id') is-invalid @enderror" required>
+                                <option value="">Pilih paket ujian</option>
                                 @foreach($paketUjians as $paket)
                                     <option value="{{ $paket->id }}" {{ old('batch_id') == $paket->id ? 'selected' : '' }}>
                                         {{ $paket->nama }}
                                     </option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted">Pilih paket ujian jika materi ini spesifik untuk paket tertentu</small>
+                            <small class="form-text text-muted">Pilih paket ujian untuk materi ini</small>
                             @error('batch_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

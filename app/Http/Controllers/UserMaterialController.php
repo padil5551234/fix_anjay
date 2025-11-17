@@ -35,7 +35,10 @@ class UserMaterialController extends Controller
         // Filter materials by purchased packages only
         if ($purchasedPackages->isNotEmpty()) {
             $packageIds = $purchasedPackages->pluck('id');
-            $query->whereIn('batch_id', $packageIds);
+            $query->where(function($q) use ($packageIds) {
+                $q->whereIn('batch_id', $packageIds)
+                  ->orWhereNull('batch_id'); // Include materials without batch_id if user has any purchase
+            });
         } else {
             // If user has no purchases, show no materials
             $query->whereRaw('1 = 0');
@@ -80,10 +83,13 @@ class UserMaterialController extends Controller
         $isPreviewMode = false;
 
         // Only allow access if user has purchased the package
-        $hasFullAccess = Pembelian::forUser($user->id)
-            ->forPackage($material->batch_id)
-            ->verified()
-            ->exists();
+        $hasFullAccess = false;
+        if ($material->batch_id) {
+            $hasFullAccess = Pembelian::forUser($user->id)
+                ->forPackage($material->batch_id)
+                ->verified()
+                ->exists();
+        }
 
         // If no access, show preview mode
         if (!$hasFullAccess) {
@@ -109,10 +115,13 @@ class UserMaterialController extends Controller
         }
 
         // Check if user has verified access
-        $hasAccess = Pembelian::forUser($user->id)
-            ->forPackage($material->batch_id)
-            ->verified()
-            ->exists();
+        $hasAccess = false;
+        if ($material->batch_id) {
+            $hasAccess = Pembelian::forUser($user->id)
+                ->forPackage($material->batch_id)
+                ->verified()
+                ->exists();
+        }
 
         if (!$hasAccess) {
             abort(403, 'Anda tidak memiliki akses untuk mengunduh materi ini. Pastikan pembayaran paket sudah diverifikasi.');
